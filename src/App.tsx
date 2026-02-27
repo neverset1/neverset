@@ -1,0 +1,384 @@
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'motion/react';
+import { useState } from 'react';
+import { BrowserRouter, Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
+import { ShoppingBag } from 'lucide-react';
+
+const PRODUCT_IMAGES = [
+  "https://storage.googleapis.com/aistudio-janus-prod-app-data/upload-20250227T102846Z-1087818780287532326.jpg",
+  "https://storage.googleapis.com/aistudio-janus-prod-app-data/upload-20250227T102846Z-2169527928230232490.jpg",
+  "https://storage.googleapis.com/aistudio-janus-prod-app-data/upload-20250227T102846Z-3665324545063851532.jpg",
+  "https://storage.googleapis.com/aistudio-janus-prod-app-data/upload-20250227T102846Z-4596328823533411477.jpg",
+  "https://storage.googleapis.com/aistudio-janus-prod-app-data/upload-20250227T102846Z-602859155792942738.jpg"
+];
+
+function Navbar() {
+  const { scrollY } = useScroll();
+  const [hidden, setHidden] = useState(false);
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious() ?? 0;
+    if (latest > 100 && latest > previous) {
+      setHidden(true);
+    } else {
+      setHidden(false);
+    }
+  });
+
+  return (
+    <motion.nav 
+      variants={{ visible: { y: 0 }, hidden: { y: "-100%" } }}
+      animate={hidden ? "hidden" : "visible"}
+      transition={{ duration: 0.4, ease: "easeInOut" }}
+      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-6 mix-blend-difference pointer-events-none"
+    >
+      <div className="w-16"></div> {/* Spacer for balance */}
+      <Link to="/" className="text-2xl font-serif tracking-widest text-brand-offwhite pointer-events-auto">
+        NEVERSET
+      </Link>
+      <div className="flex items-center gap-6 pointer-events-auto">
+        <Link 
+          to="/product"
+          className="text-xs font-bold tracking-[0.2em] text-brand-offwhite hover:text-brand-offwhite/70 transition-colors uppercase"
+        >
+          Shop
+        </Link>
+        <Link to="/product" className="text-brand-offwhite hover:text-brand-offwhite/70 transition-colors">
+          <ShoppingBag className="w-5 h-5" strokeWidth={1.5} />
+        </Link>
+      </div>
+    </motion.nav>
+  );
+}
+
+function LandingPage() {
+  const navigate = useNavigate();
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.8, ease: "easeInOut" }}
+      className="bg-brand-black min-h-screen"
+    >
+      <Navbar />
+      
+      {/* Hero Section */}
+      <section className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden pt-20">
+        <div className="absolute inset-0 z-0 flex items-center justify-center opacity-40">
+          <motion.img 
+            initial={{ scale: 1.05, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            src={PRODUCT_IMAGES[2]} 
+            alt="NEVERSET T-Shirt" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+        
+        <div className="relative z-10 flex flex-col items-center justify-center h-full w-full px-6 text-center mt-12">
+          <motion.h1 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="text-6xl md:text-8xl lg:text-[10rem] font-serif leading-[0.85] tracking-tighter mb-8 pointer-events-none"
+          >
+            THE HEAVYWEIGHT<br />STANDARD.
+          </motion.h1>
+          
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.5 }}
+            className="font-sans text-xs md:text-sm tracking-[0.2em] uppercase max-w-xl mx-auto text-brand-offwhite/70 leading-relaxed mb-12"
+          >
+            240gsm Premium Cotton. Flawless oversized drape. Strictly limited allocation. Designed for the elite.
+          </motion.p>
+          
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.8 }}
+            className="flex flex-col items-center"
+          >
+            <div className="flex items-center gap-2 mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+              <span className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-brand-offwhite/60">
+                BATCH 001: ONLY 3 UNITS REMAINING WORLDWIDE.
+              </span>
+            </div>
+            <button 
+              onClick={() => navigate('/product')}
+              className="bg-brand-offwhite text-brand-black px-12 py-5 text-sm font-bold tracking-[0.2em] uppercase hover:bg-opacity-90 transition-all w-full md:w-auto"
+            >
+              Acquire Now
+            </button>
+            <span className="font-sans text-[10px] font-bold tracking-[0.1em] uppercase text-brand-offwhite/40 mt-4">
+              Orders dispatch in 24 hours. No restocks.
+            </span>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Anti-Pitch Manifesto */}
+      <section className="py-32 md:py-48 px-6 md:px-12 lg:px-24 bg-brand-black flex items-center justify-center min-h-[60vh]">
+        <div className="max-w-3xl mx-auto text-center">
+          <motion.h2 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="text-3xl md:text-5xl lg:text-6xl font-serif leading-[1.2] mb-10 tracking-wide"
+          >
+            NOT FOR EVERYONE.
+          </motion.h2>
+          
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+            className="font-sans text-sm md:text-base text-brand-offwhite/70 mx-auto leading-relaxed tracking-wide"
+          >
+            NEVERSET is a uniform for the relentless. We don't do loud logos or fleeting trends. We engineer heavy, 240-gram armor for those who operate in silence. If you are looking for attention, look elsewhere. If you are looking for higher ground, you're in the right place.
+          </motion.p>
+        </div>
+      </section>
+
+      {/* Products Section */}
+      <section className="py-32 px-6 md:px-12 lg:px-24 bg-brand-charcoal min-h-[80vh] flex flex-col items-center justify-center">
+        <motion.h2 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="text-2xl md:text-4xl font-serif tracking-widest mb-20 text-center"
+        >
+          THE COLLECTION
+        </motion.h2>
+
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+          onClick={() => navigate('/product')}
+          className="group cursor-pointer flex flex-col items-center max-w-md w-full"
+        >
+          <div className="w-full aspect-[4/5] bg-[#050505] border border-brand-gray/30 mb-8 overflow-hidden relative">
+            <img 
+              src={PRODUCT_IMAGES[0]} 
+              alt="NEVERSET T-Shirt" 
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-brand-offwhite/0 group-hover:bg-brand-offwhite/5 transition-colors duration-700" />
+          </div>
+          <div className="text-center w-full flex flex-col items-center">
+            <h3 className="font-serif text-xl md:text-2xl tracking-wide mb-3 group-hover:text-brand-offwhite/80 transition-colors">NEVERSET 240gsm Oversized T-Shirt</h3>
+            <p className="font-sans text-sm tracking-[0.1em] text-brand-offwhite/60 mb-6">MAD 249.00</p>
+            <div className="h-px w-12 bg-brand-gray group-hover:w-24 group-hover:bg-brand-offwhite transition-all duration-500 mb-6" />
+            <span className="font-sans text-xs font-bold tracking-[0.2em] uppercase text-brand-offwhite/50 group-hover:text-brand-offwhite transition-colors">
+              View Artifact
+            </span>
+          </div>
+        </motion.div>
+      </section>
+    </motion.div>
+  );
+}
+
+function ProductPage() {
+  const [activeImage, setActiveImage] = useState(0);
+  const [size, setSize] = useState<string | null>(null);
+  const sizes = ['S', 'M', 'L', 'XL'];
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.8, ease: "easeInOut" }}
+      className="bg-brand-black min-h-screen pt-24 pb-12"
+    >
+      <Navbar />
+      
+      <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:px-24">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+          
+          {/* Left Column: Visuals */}
+          <div className="flex flex-col space-y-4 lg:sticky lg:top-32">
+            {/* Desktop Main Image */}
+            <motion.div 
+              key={activeImage}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="hidden lg:block w-full aspect-[4/5] relative overflow-hidden bg-brand-charcoal"
+            >
+              <img 
+                src={PRODUCT_IMAGES[activeImage]} 
+                alt="NEVERSET T-Shirt" 
+                className="w-full h-full object-cover"
+              />
+            </motion.div>
+            
+            {/* Desktop Thumbnails */}
+            <div className="hidden lg:grid grid-cols-5 gap-4">
+              {PRODUCT_IMAGES.map((img, idx) => (
+                <button 
+                  key={idx}
+                  onClick={() => setActiveImage(idx)}
+                  className={`aspect-[4/5] overflow-hidden transition-all duration-300 ${activeImage === idx ? 'opacity-100 ring-1 ring-brand-offwhite' : 'opacity-50 hover:opacity-100'}`}
+                >
+                  <img src={img} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
+
+            {/* Mobile Carousel */}
+            <div className="lg:hidden relative w-[calc(100%+3rem)] -ml-6 md:w-[calc(100%+6rem)] md:-ml-12 aspect-[4/5] overflow-hidden bg-brand-charcoal mb-8">
+              <div 
+                className="flex w-full h-full overflow-x-auto snap-x snap-mandatory hide-scrollbar"
+                onScroll={(e) => {
+                  const scrollLeft = e.currentTarget.scrollLeft;
+                  const width = e.currentTarget.clientWidth;
+                  const newIndex = Math.round(scrollLeft / width);
+                  setActiveImage(newIndex);
+                }}
+              >
+                {PRODUCT_IMAGES.map((img, idx) => (
+                  <div key={idx} className="w-full h-full flex-shrink-0 snap-center">
+                    <img src={img} alt={`Slide ${idx + 1}`} className="w-full h-full object-cover" />
+                  </div>
+                ))}
+              </div>
+              {/* Mobile Indicator */}
+              <div className="absolute bottom-4 right-4 bg-brand-black px-3 py-1 text-xs font-bold tracking-widest text-brand-offwhite border border-brand-offwhite/20">
+                {activeImage + 1} / {PRODUCT_IMAGES.length}
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Checkout Form */}
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="flex flex-col"
+          >
+            <h1 className="font-serif text-4xl md:text-5xl mb-4 tracking-wide">NEVERSET 240gsm Oversized T-Shirt</h1>
+            <p className="font-sans text-xl tracking-tight mb-12 text-brand-offwhite/90">MAD 249.00</p>
+
+            <div className="mb-12">
+              <span className="block font-sans text-xs font-bold tracking-[0.2em] uppercase text-brand-offwhite/50 mb-4">Select Size</span>
+              <div className="grid grid-cols-4 gap-3">
+                {sizes.map(s => (
+                  <button
+                    key={s}
+                    onClick={() => setSize(s)}
+                    className={`py-4 text-sm font-medium transition-all border ${size === s ? 'bg-brand-offwhite text-brand-black border-brand-offwhite' : 'border-brand-gray text-brand-offwhite/70 hover:border-brand-offwhite/50'}`}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <hr className="border-brand-gray/30 mb-12" />
+
+            <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+              <div>
+                <label className="block font-sans text-xs font-bold tracking-[0.2em] uppercase text-brand-offwhite/50 mb-2">Full Name</label>
+                <input 
+                  type="text" 
+                  className="w-full bg-transparent border border-brand-gray text-brand-offwhite px-4 py-4 text-sm focus:outline-none focus:border-brand-offwhite transition-colors rounded-none"
+                  required
+                />
+              </div>
+              
+              <div>
+                <label className="block font-sans text-xs font-bold tracking-[0.2em] uppercase text-brand-offwhite/50 mb-2">Phone Number</label>
+                <input 
+                  type="tel" 
+                  className="w-full bg-transparent border border-brand-gray text-brand-offwhite px-4 py-4 text-sm focus:outline-none focus:border-brand-offwhite transition-colors rounded-none"
+                  required
+                />
+              </div>
+              
+              <div>
+                <label className="block font-sans text-xs font-bold tracking-[0.2em] uppercase text-brand-offwhite/50 mb-2">City</label>
+                <input 
+                  type="text" 
+                  className="w-full bg-transparent border border-brand-gray text-brand-offwhite px-4 py-4 text-sm focus:outline-none focus:border-brand-offwhite transition-colors rounded-none"
+                  required
+                />
+              </div>
+              
+              <div>
+                <label className="block font-sans text-xs font-bold tracking-[0.2em] uppercase text-brand-offwhite/50 mb-2">Detailed Address</label>
+                <textarea 
+                  rows={3}
+                  className="w-full bg-transparent border border-brand-gray text-brand-offwhite px-4 py-4 text-sm focus:outline-none focus:border-brand-offwhite transition-colors rounded-none resize-none"
+                  required
+                ></textarea>
+              </div>
+
+              <button 
+                type="submit"
+                className="w-full bg-brand-offwhite text-brand-black py-5 mt-4 text-sm font-bold tracking-[0.2em] uppercase hover:bg-opacity-90 transition-all rounded-none"
+              >
+                Confirm Order
+              </button>
+              
+              <p className="text-center font-sans text-[10px] font-bold tracking-[0.1em] uppercase text-brand-offwhite/40 mt-4">
+                Cash on Delivery. Free Nationwide Shipping.
+              </p>
+            </form>
+
+            <div className="pt-16 mt-16 border-t border-brand-gray/30">
+              <h3 className="font-serif text-xl mb-8 tracking-wide text-brand-offwhite">THE ANATOMY</h3>
+              <ul className="space-y-6 font-sans text-sm tracking-wide text-brand-offwhite/70">
+                <li className="flex items-start gap-4">
+                  <span className="w-1 h-1 bg-brand-offwhite/50 block mt-2 flex-shrink-0"></span> 
+                  <span><strong className="text-brand-offwhite font-medium">The Weight:</strong> 240gsm High-Density Armor. Falls perfectly. Doesn't cling.</span>
+                </li>
+                <li className="flex items-start gap-4">
+                  <span className="w-1 h-1 bg-brand-offwhite/50 block mt-2 flex-shrink-0"></span> 
+                  <span><strong className="text-brand-offwhite font-medium">The Silhouette:</strong> Architecturally oversized. Dropped shoulders for a stoic, relaxed dominance.</span>
+                </li>
+                <li className="flex items-start gap-4">
+                  <span className="w-1 h-1 bg-brand-offwhite/50 block mt-2 flex-shrink-0"></span> 
+                  <span><strong className="text-brand-offwhite font-medium">The Mark:</strong> Surgical precision off-white embroidery. Quiet but impossible to ignore.</span>
+                </li>
+              </ul>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+function AnimatedRoutes() {
+  const location = useLocation();
+  
+  return (
+    <AnimatePresence mode="wait">
+      {/* @ts-ignore - React Router v6 Routes accepts key but types don't reflect it */}
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/product" element={<ProductPage />} />
+      </Routes>
+    </AnimatePresence>
+  );
+}
+
+export default function App() {
+  return (
+    <div className="min-h-screen bg-brand-black text-brand-offwhite font-sans selection:bg-brand-offwhite selection:text-brand-black">
+      <BrowserRouter>
+        <AnimatedRoutes />
+      </BrowserRouter>
+    </div>
+  );
+}
