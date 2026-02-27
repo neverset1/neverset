@@ -1,5 +1,5 @@
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'motion/react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
 import { ShoppingBag } from 'lucide-react';
 
@@ -192,6 +192,63 @@ function ProductPage() {
   const [size, setSize] = useState<string | null>(null);
   const sizes = ['S', 'M', 'L', 'XL'];
 
+  const [fullName, setFullName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [city, setCity] = useState('');
+  const [address, setAddress] = useState('');
+  const [error, setError] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const navigate = useNavigate();
+
+  const handleOrder = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+
+    if (!size || !fullName.trim() || !phone.trim() || !city.trim() || !address.trim()) {
+      setError('INCOMPLETE DATA. FILL ALL FIELDS.');
+      return;
+    }
+
+    setIsProcessing(true);
+
+    const payload = {
+      access_key: "1105ddb7-2a7e-424c-ae3f-3f9f5f6a378e",
+      subject: "⬛ NEW NEVERSET ORDER ⬛",
+      from_name: "NEVERSET Store",
+      botcheck: false,
+      Product: "240gsm Oversized T-Shirt (Black)",
+      Size: size,
+      Price: "MAD 249.00",
+      Customer_Name: fullName,
+      Phone: phone,
+      City: city,
+      Address: address
+    };
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        setIsSuccess(true);
+      } else {
+        setError('CONNECTION ERROR. PLEASE TRY AGAIN.');
+      }
+    } catch (err) {
+      setError('CONNECTION ERROR. PLEASE TRY AGAIN.');
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   return (
     <motion.div 
       initial={{ opacity: 0 }}
@@ -259,99 +316,127 @@ function ProductPage() {
             </div>
           </div>
 
-          {/* Right Column: Checkout Form */}
+          {/* Right Column: Checkout Form / Success State */}
           <motion.div 
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             className="flex flex-col"
           >
-            <h1 className="font-serif text-4xl md:text-5xl mb-4 tracking-wide">NEVERSET 240gsm Oversized T-Shirt</h1>
-            <p className="font-sans text-xl tracking-tight mb-12 text-brand-offwhite/90">MAD 249.00</p>
+            {isSuccess ? (
+              <div className="flex flex-col items-center justify-center h-full min-h-[60vh] text-center border border-brand-offwhite/20 p-12 bg-[#050505]">
+                <h2 className="font-serif text-3xl md:text-4xl tracking-widest mb-6 text-brand-offwhite">ACQUISITION CONFIRMED.</h2>
+                <p className="font-sans text-sm tracking-wide text-brand-offwhite/60 leading-relaxed max-w-md mb-12">
+                  Your order for the NEVERSET 240gsm T-Shirt has been securely received. Our team will contact you shortly for dispatch. Welcome to the doctrine.
+                </p>
+                <button 
+                  onClick={() => navigate('/')}
+                  className="bg-transparent border border-brand-offwhite text-brand-offwhite px-12 py-4 text-xs font-bold tracking-[0.2em] uppercase hover:bg-brand-offwhite hover:text-brand-black transition-all rounded-none"
+                >
+                  Return
+                </button>
+              </div>
+            ) : (
+              <>
+                <h1 className="font-serif text-4xl md:text-5xl mb-4 tracking-wide">NEVERSET 240gsm Oversized T-Shirt</h1>
+                <p className="font-sans text-xl tracking-tight mb-12 text-brand-offwhite/90">MAD 249.00</p>
 
-            <div className="mb-12">
-              <span className="block font-sans text-xs font-bold tracking-[0.2em] uppercase text-brand-offwhite/50 mb-4">Select Size</span>
-              <div className="grid grid-cols-4 gap-3">
-                {sizes.map(s => (
-                  <button
-                    key={s}
-                    onClick={() => setSize(s)}
-                    className={`py-4 text-sm font-medium transition-all border ${size === s ? 'bg-brand-offwhite text-brand-black border-brand-offwhite' : 'border-brand-gray text-brand-offwhite/70 hover:border-brand-offwhite/50'}`}
+                <div className="mb-12">
+                  <span className="block font-sans text-xs font-bold tracking-[0.2em] uppercase text-brand-offwhite/50 mb-4">Select Size</span>
+                  <div className="grid grid-cols-4 gap-3">
+                    {sizes.map(s => (
+                      <button
+                        key={s}
+                        onClick={() => setSize(s)}
+                        className={`py-4 text-sm font-medium transition-all border ${size === s ? 'bg-brand-offwhite text-brand-black border-brand-offwhite' : 'border-brand-gray text-brand-offwhite/70 hover:border-brand-offwhite/50'}`}
+                      >
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <hr className="border-brand-gray/30 mb-12" />
+
+                <form className="space-y-6" onSubmit={handleOrder}>
+                  <div>
+                    <label className="block font-sans text-xs font-bold tracking-[0.2em] uppercase text-brand-offwhite/50 mb-2">Full Name</label>
+                    <input 
+                      type="text" 
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      className="w-full bg-transparent border border-brand-gray text-brand-offwhite px-4 py-4 text-sm focus:outline-none focus:border-brand-offwhite transition-colors rounded-none"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block font-sans text-xs font-bold tracking-[0.2em] uppercase text-brand-offwhite/50 mb-2">Phone Number</label>
+                    <input 
+                      type="tel" 
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      className="w-full bg-transparent border border-brand-gray text-brand-offwhite px-4 py-4 text-sm focus:outline-none focus:border-brand-offwhite transition-colors rounded-none"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block font-sans text-xs font-bold tracking-[0.2em] uppercase text-brand-offwhite/50 mb-2">City</label>
+                    <input 
+                      type="text" 
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
+                      className="w-full bg-transparent border border-brand-gray text-brand-offwhite px-4 py-4 text-sm focus:outline-none focus:border-brand-offwhite transition-colors rounded-none"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block font-sans text-xs font-bold tracking-[0.2em] uppercase text-brand-offwhite/50 mb-2">Detailed Address</label>
+                    <textarea 
+                      rows={3}
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                      className="w-full bg-transparent border border-brand-gray text-brand-offwhite px-4 py-4 text-sm focus:outline-none focus:border-brand-offwhite transition-colors rounded-none resize-none"
+                    ></textarea>
+                  </div>
+
+                  <button 
+                    type="submit"
+                    disabled={isProcessing}
+                    className={`w-full bg-brand-offwhite text-brand-black py-5 mt-4 text-sm font-bold tracking-[0.2em] uppercase transition-all rounded-none ${isProcessing ? 'cursor-wait opacity-80' : 'hover:bg-opacity-90'}`}
                   >
-                    {s}
+                    {isProcessing ? 'PROCESSING...' : 'Confirm Order'}
                   </button>
-                ))}
-              </div>
-            </div>
+                  
+                  {error && (
+                    <p className="text-center font-sans text-[10px] font-bold tracking-[0.1em] uppercase text-red-500 mt-4">
+                      {error}
+                    </p>
+                  )}
+                  
+                  <p className="text-center font-sans text-[10px] font-bold tracking-[0.1em] uppercase text-brand-offwhite/40 mt-4">
+                    Cash on Delivery. Free Nationwide Shipping.
+                  </p>
+                </form>
 
-            <hr className="border-brand-gray/30 mb-12" />
-
-            <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-              <div>
-                <label className="block font-sans text-xs font-bold tracking-[0.2em] uppercase text-brand-offwhite/50 mb-2">Full Name</label>
-                <input 
-                  type="text" 
-                  className="w-full bg-transparent border border-brand-gray text-brand-offwhite px-4 py-4 text-sm focus:outline-none focus:border-brand-offwhite transition-colors rounded-none"
-                  required
-                />
-              </div>
-              
-              <div>
-                <label className="block font-sans text-xs font-bold tracking-[0.2em] uppercase text-brand-offwhite/50 mb-2">Phone Number</label>
-                <input 
-                  type="tel" 
-                  className="w-full bg-transparent border border-brand-gray text-brand-offwhite px-4 py-4 text-sm focus:outline-none focus:border-brand-offwhite transition-colors rounded-none"
-                  required
-                />
-              </div>
-              
-              <div>
-                <label className="block font-sans text-xs font-bold tracking-[0.2em] uppercase text-brand-offwhite/50 mb-2">City</label>
-                <input 
-                  type="text" 
-                  className="w-full bg-transparent border border-brand-gray text-brand-offwhite px-4 py-4 text-sm focus:outline-none focus:border-brand-offwhite transition-colors rounded-none"
-                  required
-                />
-              </div>
-              
-              <div>
-                <label className="block font-sans text-xs font-bold tracking-[0.2em] uppercase text-brand-offwhite/50 mb-2">Detailed Address</label>
-                <textarea 
-                  rows={3}
-                  className="w-full bg-transparent border border-brand-gray text-brand-offwhite px-4 py-4 text-sm focus:outline-none focus:border-brand-offwhite transition-colors rounded-none resize-none"
-                  required
-                ></textarea>
-              </div>
-
-              <button 
-                type="submit"
-                className="w-full bg-brand-offwhite text-brand-black py-5 mt-4 text-sm font-bold tracking-[0.2em] uppercase hover:bg-opacity-90 transition-all rounded-none"
-              >
-                Confirm Order
-              </button>
-              
-              <p className="text-center font-sans text-[10px] font-bold tracking-[0.1em] uppercase text-brand-offwhite/40 mt-4">
-                Cash on Delivery. Free Nationwide Shipping.
-              </p>
-            </form>
-
-            <div className="pt-16 mt-16 border-t border-brand-gray/30">
-              <h3 className="font-serif text-xl mb-8 tracking-wide text-brand-offwhite">THE ANATOMY</h3>
-              <ul className="space-y-6 font-sans text-sm tracking-wide text-brand-offwhite/70">
-                <li className="flex items-start gap-4">
-                  <span className="w-1 h-1 bg-brand-offwhite/50 block mt-2 flex-shrink-0"></span> 
-                  <span><strong className="text-brand-offwhite font-medium">The Weight:</strong> 240gsm High-Density Armor. Falls perfectly. Doesn't cling.</span>
-                </li>
-                <li className="flex items-start gap-4">
-                  <span className="w-1 h-1 bg-brand-offwhite/50 block mt-2 flex-shrink-0"></span> 
-                  <span><strong className="text-brand-offwhite font-medium">The Silhouette:</strong> Architecturally oversized. Dropped shoulders for a stoic, relaxed dominance.</span>
-                </li>
-                <li className="flex items-start gap-4">
-                  <span className="w-1 h-1 bg-brand-offwhite/50 block mt-2 flex-shrink-0"></span> 
-                  <span><strong className="text-brand-offwhite font-medium">The Mark:</strong> Surgical precision off-white embroidery. Quiet but impossible to ignore.</span>
-                </li>
-              </ul>
-            </div>
+                <div className="pt-16 mt-16 border-t border-brand-gray/30">
+                  <h3 className="font-serif text-xl mb-8 tracking-wide text-brand-offwhite">THE ANATOMY</h3>
+                  <ul className="space-y-6 font-sans text-sm tracking-wide text-brand-offwhite/70">
+                    <li className="flex items-start gap-4">
+                      <span className="w-1 h-1 bg-brand-offwhite/50 block mt-2 flex-shrink-0"></span> 
+                      <span><strong className="text-brand-offwhite font-medium">The Weight:</strong> 240gsm High-Density Armor. Falls perfectly. Doesn't cling.</span>
+                    </li>
+                    <li className="flex items-start gap-4">
+                      <span className="w-1 h-1 bg-brand-offwhite/50 block mt-2 flex-shrink-0"></span> 
+                      <span><strong className="text-brand-offwhite font-medium">The Silhouette:</strong> Architecturally oversized. Dropped shoulders for a stoic, relaxed dominance.</span>
+                    </li>
+                    <li className="flex items-start gap-4">
+                      <span className="w-1 h-1 bg-brand-offwhite/50 block mt-2 flex-shrink-0"></span> 
+                      <span><strong className="text-brand-offwhite font-medium">The Mark:</strong> Surgical precision off-white embroidery. Quiet but impossible to ignore.</span>
+                    </li>
+                  </ul>
+                </div>
+              </>
+            )}
           </motion.div>
         </div>
       </div>
