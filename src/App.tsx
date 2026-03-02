@@ -4,11 +4,10 @@ import { BrowserRouter, Routes, Route, Link, useNavigate, useLocation } from 're
 import { ShoppingBag } from 'lucide-react';
 
 const PRODUCT_IMAGES = [
-  "https://storage.googleapis.com/aistudio-janus-prod-app-data/upload-20250227T102846Z-1087818780287532326.jpg",
-  "https://storage.googleapis.com/aistudio-janus-prod-app-data/upload-20250227T102846Z-2169527928230232490.jpg",
-  "https://storage.googleapis.com/aistudio-janus-prod-app-data/upload-20250227T102846Z-3665324545063851532.jpg",
-  "https://storage.googleapis.com/aistudio-janus-prod-app-data/upload-20250227T102846Z-4596328823533411477.jpg",
-  "https://storage.googleapis.com/aistudio-janus-prod-app-data/upload-20250227T102846Z-602859155792942738.jpg"
+  "https://i.postimg.cc/TPYRDsxF/1772154400297-Photoroom.png",
+  "https://i.postimg.cc/pr54jfyS/nano-banana-removed-Photoroom.png",
+  "https://i.postimg.cc/pdPwS518/nano-banana-removed2-Photoroom.png",
+  "https://i.postimg.cc/Qx1xG50C/nano-banana-removed-(1)-Photoroom.png"
 ];
 
 function Navbar() {
@@ -59,29 +58,18 @@ function LandingPage() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.8, ease: "easeInOut" }}
-      className="bg-brand-black min-h-screen"
+      className="min-h-screen"
     >
       <Navbar />
       
       {/* Hero Section */}
-      <section className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden pt-20">
-        <div className="absolute inset-0 z-0 flex items-center justify-center opacity-40">
-          <motion.img 
-            initial={{ scale: 1.05, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
-            src={PRODUCT_IMAGES[2]} 
-            alt="NEVERSET T-Shirt" 
-            className="w-full h-full object-cover"
-          />
-        </div>
-        
-        <div className="relative z-10 flex flex-col items-center justify-center h-full w-full px-6 text-center mt-12">
+      <section className="w-full min-h-screen flex flex-col items-center justify-center text-center px-4 pt-20">
+        <div className="flex flex-col items-center max-w-5xl mx-auto space-y-8">
           <motion.h1 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="text-6xl md:text-8xl lg:text-[10rem] font-serif leading-[0.85] tracking-tighter mb-8 pointer-events-none"
+            className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-serif leading-[0.9] tracking-tighter bg-gradient-to-r from-gray-400 via-gray-100 to-gray-500 inline-block text-transparent bg-clip-text drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]"
           >
             THE HEAVYWEIGHT<br />STANDARD.
           </motion.h1>
@@ -90,7 +78,7 @@ function LandingPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.5 }}
-            className="font-sans text-xs md:text-sm tracking-[0.2em] uppercase max-w-xl mx-auto text-brand-offwhite/70 leading-relaxed mb-12"
+            className="font-sans text-xs md:text-sm tracking-[0.2em] uppercase max-w-2xl text-brand-offwhite/70 leading-relaxed"
           >
             240gsm Premium Cotton. Flawless oversized drape. Strictly limited allocation. Designed for the elite.
           </motion.p>
@@ -99,9 +87,9 @@ function LandingPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.8 }}
-            className="flex flex-col items-center"
+            className="flex flex-col items-center pt-8 w-full"
           >
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-2 mb-6">
               <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
               <span className="font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-brand-offwhite/60">
                 BATCH 001: ONLY 3 UNITS REMAINING WORLDWIDE.
@@ -109,11 +97,11 @@ function LandingPage() {
             </div>
             <button 
               onClick={() => navigate('/product')}
-              className="bg-brand-offwhite text-brand-black px-12 py-5 text-sm font-bold tracking-[0.2em] uppercase hover:bg-opacity-90 transition-all w-full md:w-auto"
+              className="bg-white text-black px-12 py-4 text-sm font-bold tracking-[0.2em] uppercase hover:bg-gray-200 transition-all w-full sm:w-auto rounded-none"
             >
               Acquire Now
             </button>
-            <span className="font-sans text-[10px] font-bold tracking-[0.1em] uppercase text-brand-offwhite/40 mt-4">
+            <span className="font-sans text-[10px] font-bold tracking-[0.1em] uppercase text-brand-offwhite/40 mt-6">
               Orders dispatch in 24 hours. No restocks.
             </span>
           </motion.div>
@@ -121,7 +109,7 @@ function LandingPage() {
       </section>
 
       {/* Anti-Pitch Manifesto */}
-      <section className="py-32 md:py-48 px-6 md:px-12 lg:px-24 bg-brand-black flex items-center justify-center min-h-[60vh]">
+      <section className="py-32 md:py-48 px-6 md:px-12 lg:px-24 flex items-center justify-center min-h-[60vh]">
         <div className="max-w-3xl mx-auto text-center">
           <motion.h2 
             initial={{ opacity: 0, y: 30 }}
@@ -146,7 +134,7 @@ function LandingPage() {
       </section>
 
       {/* Products Section */}
-      <section className="py-32 px-6 md:px-12 lg:px-24 bg-brand-charcoal min-h-[80vh] flex flex-col items-center justify-center">
+      <section className="py-32 px-6 md:px-12 lg:px-24 min-h-[80vh] flex flex-col items-center justify-center">
         <motion.h2 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -165,18 +153,26 @@ function LandingPage() {
           onClick={() => navigate('/product')}
           className="group cursor-pointer flex flex-col items-center max-w-md w-full"
         >
-          <div className="w-full aspect-[4/5] bg-[#050505] border border-brand-gray/30 mb-8 overflow-hidden relative">
+          <div className="w-full aspect-[4/5] bg-transparent mb-8 overflow-hidden relative">
             <img 
               src={PRODUCT_IMAGES[0]} 
               alt="NEVERSET T-Shirt" 
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105 drop-shadow-[0_20px_25px_rgba(0,0,0,0.5)]"
             />
             <div className="absolute inset-0 bg-brand-offwhite/0 group-hover:bg-brand-offwhite/5 transition-colors duration-700" />
           </div>
           <div className="text-center w-full flex flex-col items-center">
             <h3 className="font-serif text-xl md:text-2xl tracking-wide mb-3 group-hover:text-brand-offwhite/80 transition-colors">NEVERSET 240gsm Oversized T-Shirt</h3>
-            <p className="font-sans text-sm tracking-[0.1em] text-brand-offwhite/60 mb-6">MAD 249.00</p>
-            <div className="h-px w-12 bg-brand-gray group-hover:w-24 group-hover:bg-brand-offwhite transition-all duration-500 mb-6" />
+            <div className="flex flex-col items-center mb-6">
+              <span className="bg-white text-black px-2 py-1 text-[9px] font-bold tracking-[0.2em] uppercase mb-2">
+                [ BATCH 001: INITIATION PRICE ]
+              </span>
+              <div className="flex items-center gap-3">
+                <span className="font-sans text-sm tracking-[0.1em] text-neutral-500 line-through">MAD 249.00</span>
+                <span className="font-sans text-base font-bold tracking-[0.1em] text-white">MAD 179.00</span>
+              </div>
+            </div>
+            <div className="h-px w-12 bg-slate-600 group-hover:w-24 group-hover:bg-brand-offwhite transition-all duration-500 mb-6" />
             <span className="font-sans text-xs font-bold tracking-[0.2em] uppercase text-brand-offwhite/50 group-hover:text-brand-offwhite transition-colors">
               View Artifact
             </span>
@@ -219,7 +215,7 @@ function ProductPage() {
       botcheck: false,
       Product: "240gsm Oversized T-Shirt (Black)",
       Size: size,
-      Price: "MAD 249.00",
+      Price: "MAD 179.00",
       Customer_Name: fullName,
       Phone: phone,
       City: city,
@@ -255,7 +251,7 @@ function ProductPage() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.8, ease: "easeInOut" }}
-      className="bg-brand-black min-h-screen pt-24 pb-12"
+      className="min-h-screen pt-24 pb-12"
     >
       <Navbar />
       
@@ -270,30 +266,30 @@ function ProductPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
-              className="hidden lg:block w-full aspect-[4/5] relative overflow-hidden bg-brand-charcoal"
+              className="hidden lg:block w-full aspect-[4/5] relative overflow-hidden bg-transparent"
             >
               <img 
                 src={PRODUCT_IMAGES[activeImage]} 
                 alt="NEVERSET T-Shirt" 
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain drop-shadow-[0_20px_25px_rgba(0,0,0,0.5)]"
               />
             </motion.div>
             
             {/* Desktop Thumbnails */}
-            <div className="hidden lg:grid grid-cols-5 gap-4">
+            <div className="hidden lg:grid grid-cols-4 gap-4">
               {PRODUCT_IMAGES.map((img, idx) => (
                 <button 
                   key={idx}
                   onClick={() => setActiveImage(idx)}
-                  className={`aspect-[4/5] overflow-hidden transition-all duration-300 ${activeImage === idx ? 'opacity-100 ring-1 ring-brand-offwhite' : 'opacity-50 hover:opacity-100'}`}
+                  className={`aspect-[4/5] overflow-hidden transition-all duration-300 bg-transparent ${activeImage === idx ? 'opacity-100 ring-1 ring-brand-offwhite' : 'opacity-50 hover:opacity-100'}`}
                 >
-                  <img src={img} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+                  <img src={img} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,0.5)]" />
                 </button>
               ))}
             </div>
 
             {/* Mobile Carousel */}
-            <div className="lg:hidden relative w-[calc(100%+3rem)] -ml-6 md:w-[calc(100%+6rem)] md:-ml-12 aspect-[4/5] overflow-hidden bg-brand-charcoal mb-8">
+            <div className="lg:hidden relative w-[calc(100%+3rem)] -ml-6 md:w-[calc(100%+6rem)] md:-ml-12 aspect-[4/5] overflow-hidden bg-transparent mb-8">
               <div 
                 className="flex w-full h-full overflow-x-auto snap-x snap-mandatory hide-scrollbar"
                 onScroll={(e) => {
@@ -304,13 +300,13 @@ function ProductPage() {
                 }}
               >
                 {PRODUCT_IMAGES.map((img, idx) => (
-                  <div key={idx} className="w-full h-full flex-shrink-0 snap-center">
-                    <img src={img} alt={`Slide ${idx + 1}`} className="w-full h-full object-cover" />
+                  <div key={idx} className="w-full h-full flex-shrink-0 snap-center bg-transparent">
+                    <img src={img} alt={`Slide ${idx + 1}`} className="w-full h-full object-contain drop-shadow-[0_20px_25px_rgba(0,0,0,0.5)]" />
                   </div>
                 ))}
               </div>
               {/* Mobile Indicator */}
-              <div className="absolute bottom-4 right-4 bg-brand-black px-3 py-1 text-xs font-bold tracking-widest text-brand-offwhite border border-brand-offwhite/20">
+              <div className="absolute bottom-4 right-4 bg-black/50 backdrop-blur-sm px-3 py-1 text-xs font-bold tracking-widest text-brand-offwhite border border-slate-600/50">
                 {activeImage + 1} / {PRODUCT_IMAGES.length}
               </div>
             </div>
@@ -324,7 +320,7 @@ function ProductPage() {
             className="flex flex-col"
           >
             {isSuccess ? (
-              <div className="flex flex-col items-center justify-center h-full min-h-[60vh] text-center border border-brand-offwhite/20 p-12 bg-[#050505]">
+              <div className="flex flex-col items-center justify-center h-full min-h-[60vh] text-center border border-slate-600/50 p-12 bg-black/20 backdrop-blur-sm">
                 <h2 className="font-serif text-3xl md:text-4xl tracking-widest mb-6 text-brand-offwhite">ACQUISITION CONFIRMED.</h2>
                 <p className="font-sans text-sm tracking-wide text-brand-offwhite/60 leading-relaxed max-w-md mb-12">
                   Your order for the NEVERSET 240gsm T-Shirt has been securely received. Our team will contact you shortly for dispatch. Welcome to the doctrine.
@@ -339,7 +335,15 @@ function ProductPage() {
             ) : (
               <>
                 <h1 className="font-serif text-4xl md:text-5xl mb-4 tracking-wide">NEVERSET 240gsm Oversized T-Shirt</h1>
-                <p className="font-sans text-xl tracking-tight mb-12 text-brand-offwhite/90">MAD 249.00</p>
+                <div className="mb-12">
+                  <span className="inline-block bg-white text-black px-3 py-1.5 text-[10px] font-bold tracking-[0.2em] uppercase mb-4">
+                    [ BATCH 001: INITIATION PRICE ]
+                  </span>
+                  <div className="flex items-center gap-4">
+                    <span className="font-sans text-xl tracking-tight text-neutral-500 line-through">MAD 249.00</span>
+                    <span className="font-sans text-3xl font-bold tracking-tight text-white">MAD 179.00</span>
+                  </div>
+                </div>
 
                 <div className="mb-12">
                   <span className="block font-sans text-xs font-bold tracking-[0.2em] uppercase text-brand-offwhite/50 mb-4">Select Size</span>
@@ -348,7 +352,7 @@ function ProductPage() {
                       <button
                         key={s}
                         onClick={() => setSize(s)}
-                        className={`py-4 text-sm font-medium transition-all border ${size === s ? 'bg-brand-offwhite text-brand-black border-brand-offwhite' : 'border-brand-gray text-brand-offwhite/70 hover:border-brand-offwhite/50'}`}
+                        className={`py-4 text-sm font-medium transition-all border ${size === s ? 'bg-brand-offwhite text-brand-black border-brand-offwhite' : 'border-slate-600 text-brand-offwhite/70 hover:border-brand-offwhite/50'}`}
                       >
                         {s}
                       </button>
@@ -356,7 +360,7 @@ function ProductPage() {
                   </div>
                 </div>
 
-                <hr className="border-brand-gray/30 mb-12" />
+                <hr className="border-slate-600/50 mb-12" />
 
                 <form className="space-y-6" onSubmit={handleOrder}>
                   <div>
@@ -365,7 +369,7 @@ function ProductPage() {
                       type="text" 
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
-                      className="w-full bg-transparent border border-brand-gray text-brand-offwhite px-4 py-4 text-sm focus:outline-none focus:border-brand-offwhite transition-colors rounded-none"
+                      className="w-full bg-transparent border border-slate-600 text-brand-offwhite px-4 py-4 text-sm focus:outline-none focus:border-brand-offwhite transition-colors rounded-none"
                     />
                   </div>
                   
@@ -375,7 +379,7 @@ function ProductPage() {
                       type="tel" 
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="w-full bg-transparent border border-brand-gray text-brand-offwhite px-4 py-4 text-sm focus:outline-none focus:border-brand-offwhite transition-colors rounded-none"
+                      className="w-full bg-transparent border border-slate-600 text-brand-offwhite px-4 py-4 text-sm focus:outline-none focus:border-brand-offwhite transition-colors rounded-none"
                     />
                   </div>
                   
@@ -385,7 +389,7 @@ function ProductPage() {
                       type="text" 
                       value={city}
                       onChange={(e) => setCity(e.target.value)}
-                      className="w-full bg-transparent border border-brand-gray text-brand-offwhite px-4 py-4 text-sm focus:outline-none focus:border-brand-offwhite transition-colors rounded-none"
+                      className="w-full bg-transparent border border-slate-600 text-brand-offwhite px-4 py-4 text-sm focus:outline-none focus:border-brand-offwhite transition-colors rounded-none"
                     />
                   </div>
                   
@@ -395,7 +399,7 @@ function ProductPage() {
                       rows={3}
                       value={address}
                       onChange={(e) => setAddress(e.target.value)}
-                      className="w-full bg-transparent border border-brand-gray text-brand-offwhite px-4 py-4 text-sm focus:outline-none focus:border-brand-offwhite transition-colors rounded-none resize-none"
+                      className="w-full bg-transparent border border-slate-600 text-brand-offwhite px-4 py-4 text-sm focus:outline-none focus:border-brand-offwhite transition-colors rounded-none resize-none"
                     ></textarea>
                   </div>
 
@@ -418,7 +422,7 @@ function ProductPage() {
                   </p>
                 </form>
 
-                <div className="pt-16 mt-16 border-t border-brand-gray/30">
+                <div className="pt-16 mt-16 border-t border-slate-600/50">
                   <h3 className="font-serif text-xl mb-8 tracking-wide text-brand-offwhite">THE ANATOMY</h3>
                   <ul className="space-y-6 font-sans text-sm tracking-wide text-brand-offwhite/70">
                     <li className="flex items-start gap-4">
@@ -460,7 +464,10 @@ function AnimatedRoutes() {
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-brand-black text-brand-offwhite font-sans selection:bg-brand-offwhite selection:text-brand-black">
+    <div className="min-h-screen text-brand-offwhite font-sans selection:bg-brand-offwhite selection:text-brand-black relative">
+      {/* Solid Black Background */}
+      <div className="pointer-events-none fixed inset-0 z-[-2] bg-black" />
+      
       <BrowserRouter>
         <AnimatedRoutes />
       </BrowserRouter>
